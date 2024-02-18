@@ -1,0 +1,449 @@
+--------------------------
+Managing users
+--------------------------
+
+sudo useradd <username> - add a user
+sudo useradd -m <username> - add a user and create a home directory
+sudo useradd -r <username> - add a system user
+sudo userdel <username> - delete a user, but not their home directory
+sudo userdel -r <username> - delete a user and their home directory
+passwd - change password for a current user
+sudo passwd <username> - change a password for another user
+# usermod -l <new_username> <old_username> - rename a user
+sudo passwd -l <username> - lock the user account
+sudo passwd -u <username> - unlock the user account
+# usermod -d /home/newhome --move-home <username> - move home directory 
+
+--------------------------
+Groups
+--------------------------
+
+groups - show user groups
+sudo groupadd <groupname> - create a group
+sudo groupdel <groupname> - delete a group
+sudo usermod -aG <group> <username> - add a user to a group
+sudo gpasswd -d <username> <group> - delete a user from a group
+
+--------------------------
+Account & password expiration
+--------------------------
+
+sudo chage -l <username> - list account expiration info
+sudo chage -E <YYYY-MM-DD> <username> - set user expiration date
+sudo chage -M <N> <username> - set user password expiration period of N days
+sudo chage -M -1 <username> - disable user password expiration period
+sudo chage -m <N> <username> - set a minimum time period between password change
+
+--------------------------
+Background and foreground
+--------------------------
+<command> & - start a command as a background process
+ctrl+Z - move a process to background
+jobs - list background jobs
+fg - bring the most recent job to foreground
+fg <job_id> - bring the specific job to foreground
+
+--------------------------
+Bash aliases
+--------------------------
+
+alias - list aliases
+alias <name>="<command>" - create an alias
+unalias <name> - delete an alias
+
+--------------------------
+Public key authentication
+--------------------------
+
+ssh-keygen -b <size> - generate SSH RSA keys
+ssh-copy-id <username>@<host/ip> - copy public key to remote machine
+
+
+--------------------------
+Cron scheduling
+--------------------------
+
+crontab -l - list cron jobs
+crontab -e - setup a cron job for a current user
+crontab -u <username> -e - setup a cron job for another user
+
+
+--------------------------
+awk
+--------------------------
+
+awk <filename> - print file contents
+awk '{print $<N>}' <filename/stdout> - print Nth column separated by spaces 
+awk '{print $<X>, $<Y>}' <filename/stdout> - print multiple columns
+awk -F"<separator>" '{print}' <filename/stdout> - set a custom separator
+
+--------------------------
+sed
+--------------------------
+
+sed 's/<target_str>/<new_str>/' <filename> - replace a string from a file in stdout
+sed -i 's/<target_str>/<new_str>/' <filename> - replace a string in a file
+
+--------------------------
+Formatting & mounting storage volumes
+--------------------------
+
+mount - list all mounted storage devices
+sudo fdisk /dev/sdX - edit partitions/partition table
+sudo mkfs.<filesystem> /dev/sdXN - format a partition with a filesystem
+sudo mkfs.<filesystem> -n "label" /dev/sdXN - format a partition with a filesystem and a label
+
+--------------------------
+Systemd
+--------------------------
+
+systemctl list-unit-files --type=service - list all services and their status
+sudo systemctl enable <unit> - enable unit
+sudo systemctl enable --now <unit> - enable and start unit
+sudo systemctl disable <unit> - disable unit
+sudo systemctl start <unit> - start unit
+sudo systemctl stop <unit> - stop unit
+sudo systemctl restart <unit> - restart unit (stop and start)
+sudo systemctl reload <unit> - apply new settings without stopping the unit
+systemctl status <unit> - show unit status
+
+--------------------------
+symlinks
+--------------------------
+
+ln -s /full/path/to/a/file /path/to/a/link - create a symlink
+ln /path/to/a/file /path/to/a/link - create a hard link
+
+
+--------------------------
+find 
+--------------------------
+
+find /path/to/start -name "pattern" - find by the pattern in the name
+find /path/to/start -name "pattern" -type <f/d/l> - find a file/directory/link
+find /path/to/start -name "pattern" -exec <cmd> {} + - execute a command on all matches
+
+
+--------------------------
+File and directory permissions
+--------------------------
+
+chmod +x <filename> - set file as executable for everyone
+chmod u+x <filename> - set file as executable only for owner
+chmod <u/g/o> <+/-> <r/w/x> <filename> - generic permission change
+chmod <DDD> <filename> - permission change via numberical representation
+chmod -R <DDD> <directory> - change permissions for everything in the directory (and the directory itself)
+sudo chown <user>:<group> <file/directory> - change ownership
+sudo chown -R <user>:<group> <directory> - change ownership of directory contents
+
+--------------------------
+Navigating the Linux filesystem
+--------------------------
+
+ls - list current working directory contents
+ls -l - list current working directory contents with more info
+pwd - print working directory
+cd <path> - change working directory
+mkdir <dirname> - create a new directory
+mkdir -p dir/subdir1/subdir2 - create a directory tree
+rm <filename> - delete a file
+rm -r <directory> - delete a directory
+mv <old_name> <new_name> - rename an object
+mv <object> /new/path - move an object
+
+--------------------------
+AUR
+--------------------------
+makepkg -s - make a package
+makepkg -si - make a package and install it
+sudo pacman -U <made_package>.zst - install a package that was made with makepgk
+
+--------------------------
+Pacman
+--------------------------
+
+sudo pacman -Syy - update the pacman database cache
+sudo pacman -S <package> - install a package
+pacman -Ss - search for the package in the repository
+pacman -Q - search for the installed package
+pacman -Rsn - (R) remove package, (s) it's dependecies, (n) config files
+pacman -Qdt - list orphan packages
+"pacman -Qdtq | sudo pacman -Rsn -" - delete orphan packages
+sudo pacman -Syu - full system upgrade (doesn't upgrade AUR packages)
+
+--------------------------
+apt
+--------------------------
+
+sudo apt update - update the repositories
+sudo apt install <package> - install a package
+sudo apt remove <package> - remove a package
+apt search <package> - search for the package in the repositories
+sudo apt upgrade - update all installed packages
+sudo apt dist-upgrade - update with installation/removal of additional packages
+
+--------------------------
+hostname
+--------------------------
+
+hostname - print the host name of the computer
+hostnamectl - show system hostname and related information
+sudo hostnamectl set-hostname <new_hostname> - change hostname
+
+--------------------------
+sar (system activity reporter)
+--------------------------
+
+sudo sar -u -f /var/log/sysstat/sa<date> - read stats from a report file
+sar -u - report cpu utilization
+sar -r - memory usage
+sar -S - swap usage
+sar -b - io information
+
+--------------------------
+grep (global regular expression print)
+--------------------------
+
+<stdout> | grep <term> - print every line of stdout that contains term
+<stdout> | grep -v <term> - print every line of stdout that doesn't contain term
+grep <term> <file> - print every line of file that contains term
+grep -n <term> <file> - add line numbers to the output
+grep -c <term> <file> - count lines that include term
+grep -i <term> <file> - ignore case 
+grep <term> * - search for every file in directory
+grep -r <term> <dir> - search recursively
+
+--------------------------
+echo
+--------------------------
+
+echo "text" - print text
+echo $<var> - print a variable value
+echo -e <\atext> - print with escape interpretation
+echo "text" > <file> - write text to a file
+
+--------------------------
+bash history
+--------------------------
+
+history - list of previous commands
+!<history_num> - run a previous command with an assigned number
+!! - run the last command
+history <n> - print only the last n commands
+<Ctrl+r> for history search (doesn't work in fish though)
+
+--------------------------
+memory and swap
+--------------------------
+
+free - show RAM and swap usage
+free -h - human readable RAM and swap usage
+sysctl vm.swappiness - show swappiness value
+
+--------------------------
+ping
+--------------------------
+
+ping <ip address> - ping a server through ip
+ping <domain name> - ping a server through domain name 
+ping -c <n> <ip/domain> - ping a server n times
+
+--------------------------
+wget
+--------------------------
+
+wget <url> - download something from the internet 
+wget -O <filename> <url> - download with custom filename
+wget -c <url> - continue interrupted download
+wget -i <filename> - download from urls in a file
+
+--------------------------
+df and du
+--------------------------
+
+df - print filesystem disk usage information
+df -h - print disk usage information in human readable form
+df -hT - include filesystem type in an output
+df -hT -x <filesystem> - exclude filesystem
+
+du - show disk usage of a directory
+du -h - show in the human readable form
+du --max-depth <n> - show n directories deep 
+du -s - only show summary
+du -sc <dir1> <dir2> - show summary of multiple directories and total size
+du -sc /path/to/dir/* - show summary for every subdirectory of dir
+
+--------------------------
+head and tail
+--------------------------
+
+head <filename> - print the first 10 lines of a file
+head -n <n> <filename> - print the first n lines of a file
+tail <filename> - print the last 10 lines of a file 
+tail -n <n> <filename> - print the last n lines of a file
+tail -f <filename> - dynamically update the end of a file
+
+--------------------------
+tar and gzip
+--------------------------
+
+tar -cf <filename> <dir> - make a tar file from a directory
+tar -tf <filename> - list all files inside a tar file without extracting
+tar -tvf <filename> - list all files insidea a tar file with additional info 
+tar -xf <filename> - extract a tar file
+tar -xvf <filename> - extract a tar file and print extracted files
+tar -czf <filename> - create a tarball (compressed tar file)
+tar -czvf <filename> - create a tarball and show listing of compressed files
+
+gzip <filename> - compress a file
+gunzip <filename.gz> - uncompress a file
+
+--------------------------
+load average
+--------------------------
+
+uptime - uptime and load average
+cat /proc/loadavg - show load average
+htop - load average field
+
+--------------------------
+cat (concatenate)
+--------------------------
+
+cat <filename> - print file contents
+cat <filename1> <filename2> - concatenate and print contents of 2 files
+cat <filename1> <filename2> - concatenate 2 files and save contents into new file
+cat -n <filename> - print file contents with line numbers
+
+--------------------------
+diff
+--------------------------
+
+diff <file1> <file2> - show the differences between 2 files
+diff -s <file1> <file2> - show the differences or report identical files
+diff -u <file1> <file2> - add more lines for context
+
+--------------------------
+logging
+--------------------------
+
+last - search /var/log/wtmp file and display a list of all users logged in and out since that file was created
+sudo lastb - search /var/log/btmp file which contains all the bad login attempts
+sudo dmesg - view kernel log file
+journalctl -u <unit> - view systemd unit log
+journalctl -fu <unit> - view recent logs and follow systemd unit log
+journalctl -f - view recent logs and follow all unit logs
+
+--------------------------
+sshfs
+--------------------------
+
+sshfs <username>@<ip>:/path/to/remote/dir /path/to/local/dir - mount remote directory to a local filesystem via sshfs
+fusermount -u /path/to/local/dir - unmount a remote directory
+umount /path/to/local/dir - unmount a remote directory (might fail in some cases)
+
+--------------------------
+watch
+--------------------------
+
+watch <command> - execute the command every 2 seconds and update the output
+watch -d <command> - highlight the changes in the output
+watch -n <num_sec> <command> - change update frequency
+watch '<command> | <command>' - use watch with pipes
+
+--------------------------
+ls (list storage)
+--------------------------
+
+ls -lt - sort by time (newest first)
+ls -ltr - sort by time (oldest first)
+
+--------------------------
+ssh
+--------------------------
+
+ssh <username>@<ip/domain> - connect to a remote server via ssh
+ssh -p <num> <username>@<ip/domain> - connect to a remote server via specified port
+ssh <ip/domain> - works if local and remote usernames match
+
+--------------------------
+tr
+--------------------------
+
+cat <file> | tr [<set1>] [<set2>] - replace chars in set1 with set2 in stdout
+tr [<set1>] [<set2>] < <file> - same thing
+cat <file> | tr -d [<set>] - delete chars in set in stdout
+cat <file> | tr -s "<char>" - replace repeated char with single occurence 
+cat <file> | tr [:lower:] [:upper:] - replace lower case with upper case
+cat <file> | tr "<old_char>" "<new_char>" - replace one char with the other
+
+--------------------------
+lsof
+--------------------------
+
+lsof - list open files
+lsof /path/to/dir - list open files in a specific directory
+lsof -u <username> - filter the output by user
+lsof -u ^<username> - exclude the user from the output
+lsof -c <process> - filter the output by the process name
+lsof -p <PID> - filter the output by the process ID
+lsof -i 4 - list files of ipv4
+
+--------------------------
+cut
+--------------------------
+
+cut -b <num/range> <file> - select specific bytes from a file
+cut -c <num/range> <file> - select specific characters from a file
+cut -d <delimiter> -f <num/range> <file> - select specific fields from a file
+
+--------------------------
+scp (secure copy)
+--------------------------
+
+scp <file> <username>@<ip>:<destination/path> - copy a file to a remote machine via ssh
+scp -r <dir> <username>@<ip>:<destination/path> - copy a directory to a remote machine via ssh
+scp <username>@<ip>:<source/path> <destination/path> - copy a file (or dir) from remote to local
+
+--------------------------
+rsync
+--------------------------
+
+rsync -r <dir1> <dir2> - copy dir1 to dir2 locally
+rsync -r <dir1>/ <dir2> - copy the contents of dir1 to dir2 locally
+rsync -rv --dry-run <local_dir> <username>@<ip>:<path/to/remote/dir> - test rsync with verbose output without actually writing to destination
+rsync -rv <local_dir> <username>@<ip>:<path/to/remote/dir> - copy local_dir to remote dir
+rsync -rv <username>@<ip>:<path/to/remote/dir> <local_dir> - copy remote dir to local_dir
+rsync -rv --delete <local_dir> <username>@<ip>:<path/to/remote/dir> - copy local_dir to remote dir and delete anything that doesn't exist in local_dir
+rsync -rva <local_dir> <username>@<ip>:<path/to/remote/dir> - copy local_dir to remote dir preserving file metadata
+rsync -rvz <local_dir> <username>@<ip>:<path/to/remote/dir> - copy local_dir to remote dir using compression for file transfer
+rsync -rv --remove-source-files <local_dir> <username>@<ip>:<path/to/remote/dir> - copy local_dir to remote dir and remove files from local_dir (more like mv)
+
+--------------------------
+hardware info
+--------------------------
+
+lsusb - list of usb devices
+lspci - list of devices on pci bus
+lshw - information about hardware
+lshw -html - information about hardware as html page
+lshw -short - more compact information about hardware
+lscpu - info about cpu
+lsblk - list block devices
+
+--------------------------
+variables (bash)
+--------------------------
+
+<var_name>=<value> - delcare a variable
+echo $<var_name> - get a variable value
+env - list declared variables
+<var_name>=$(<command>) - save command output in a variable
+
+--------------------------
+nice and renice
+--------------------------
+
+nice - default niceness value
+sudo renice <niceness> -p <PID> - change priority for a process
+sudo nice -n <niceness> <command> - run a command with custom priority
