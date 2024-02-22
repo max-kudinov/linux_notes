@@ -292,8 +292,8 @@ tar -tf <filename> - list all files inside a tar file without extracting
 tar -tvf <filename> - list all files insidea a tar file with additional info 
 tar -xf <filename> - extract a tar file
 tar -xvf <filename> - extract a tar file and print extracted files
-tar -czf <filename> - create a tarball (compressed tar file)
-tar -czvf <filename> - create a tarball and show listing of compressed files
+tar -czf <filename> <dir> - create a tarball (compressed tar file)
+tar -czvf <filename> <dir> - create a tarball and show listing of compressed files
 
 gzip <filename> - compress a file
 gunzip <filename.gz> - uncompress a file
