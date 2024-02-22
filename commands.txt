@@ -447,3 +447,13 @@ nice and renice
 nice - default niceness value
 sudo renice <niceness> -p <PID> - change priority for a process
 sudo nice -n <niceness> <command> - run a command with custom priority
+
+--------------------------
+after hard drive resize
+--------------------------
+
+sudo fdisk /dev/sdX - enter fdisk
+>d <N> - delete partition N
+>n - create new partition with default start and end blocks (it has to be the last)
+>w - save
+sudo resize2fs /dev/sdXN - resize filesystem on partition
